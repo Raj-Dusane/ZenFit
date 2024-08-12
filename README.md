@@ -1,1 +1,1 @@
-# ZenFit-AI: A Fitness Tracking App
+# ZenFit: The Ultimate Fitness Tracking App
