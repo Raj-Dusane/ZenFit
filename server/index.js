@@ -11,9 +11,11 @@ app.use(cors());
 app.use(express.json({limit: "50mb"}));
 app.use(express.urlencoded({ extended: true}));
 
+const userName = "Raj Dusane";
+
 app.get("/", async(req, res) => {
     res.status(200).json({
-        message: "Hello Friends!, from Raj Dusane",
+        message: `Hello Friends!, from ${userName}`,
     });
 });
 
@@ -40,7 +42,7 @@ const connectDB = () => {
 const startServer = async () => {
     try {
         connectDB();
-        app.listen(8080, () => console.log("Server running at port 8080"));
+        app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));
     } catch (err) {
         console.log(err);
     }
