@@ -33,7 +33,7 @@ const CategoryChart = ({data}) => {
             {data?.pieChartData && ( 
               <PieChart 
                 series={[
-                  {   
+                  { 
                     data: data?.pieChartData,
                     innerRadius: 30,
                     outerRadius: 120,

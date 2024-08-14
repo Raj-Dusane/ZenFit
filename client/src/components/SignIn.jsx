@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import TextInput from './TextInput';
 import Button from './Button';
+import { UserSignIn } from "../api";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/reducers/userSlice.js";
 
 const Container = styled.div`
     width: 100%;
@@ -25,6 +28,38 @@ const Span  = styled.span`
 
 
 const SignIn = () => {
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const validateInput = () => {
+        if (!email || !password) {
+            alert("Please fill in all the fields");
+            return false;
+        }
+        return true;
+    };
+
+    const handelSignIn = async () => {
+        setLoading(true);
+        setButtonDisabled(true);
+        if (validateInput()) {
+            await UserSignIn({email, password}).then((res) => {
+                // console.log(res);
+                dispatch(loginSuccess(res.data));
+                // alert("Login Success");
+                setLoading(false);
+                setButtonDisabled(false);
+            }).catch((err) => {
+                setLoading(false);
+                setButtonDisabled(false);
+                alert(err.response.data.message);
+            });
+        }
+    };
+
   return (
     <Container>
         <div>
@@ -39,18 +74,25 @@ const SignIn = () => {
             <TextInput 
                 label="Email Address" 
                 placeholder="abc@gmail.com"
+                value={email}
+                handelChange={(e)=>setEmail(e.target.value)}
             />
             <TextInput 
                 label="Password" 
                 placeholder="Enter your password here"
                 password
+                value={password}
+                handelChange={(e)=> setPassword(e.target.value)}
             />
-            <Button
+            <Button 
                 text="SignIn"
+                onClick={handelSignIn}
+                isLoading={loading}
+                isDisabled={buttonDisabled}
             />
         </div>
     </Container>
-  )
-}
+  );
+};
 
 export default SignIn;

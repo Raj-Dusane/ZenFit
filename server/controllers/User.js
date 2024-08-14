@@ -10,7 +10,6 @@ dotenv.config();
 export const UserRegister = async (req, res, next) => {
     try {
         const { email, password, name, img } = req.body;
-
         const existingUser = await User.findOne({ email }).exec();
 
         if (existingUser) {
@@ -25,12 +24,11 @@ export const UserRegister = async (req, res, next) => {
         });
 
         const createdUser = await user.save();
-
         const token = jwt.sign({ id: createdUser._id}, process.env.JWT, {
             expiresIn: "99 years",
         });
 
-        return res.resizeBy.status(200).json({token, user});
+        return res.status(200).json({token, user});
     }
     catch (err) {
         next(err); 
@@ -40,15 +38,13 @@ export const UserRegister = async (req, res, next) => {
 export const UserLogin = async (req, res, next) => {
     try {
         const { email, password} = req.body;
-
         const user = await User.findOne({ email }).exec();
 
         if (!user) {
             return next(createError(404, "User not found."));
         }
-        console.log(user);
+        // console.log(user);
         const isPasswordCorrect = await bcrypt.compareSync(password, user.password);
-        
         if (!isPasswordCorrect) {
             return next(createError(403, "Incorrect Password")); 
         }

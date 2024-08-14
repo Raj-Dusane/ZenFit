@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components';
 import { counts } from '../utils/data';
 import CountsCard from '../components/cards/CountsCard';
@@ -6,6 +6,7 @@ import WeeklyStatsCard from '../components/cards/WeeklyStatsCard';
 import CategoryChart from '../components/cards/CategoryChart';
 import AddWorkouts from '../components/cards/AddWorkouts';
 import WorkoutCard from '../components/cards/WorkoutCard.jsx';
+import { addWorkout, getDashboardDetails, getWorkouts } from "../api/index.js";
 
 const Container = styled.div`
     flex: 1;
@@ -68,39 +69,40 @@ const CardWrapper = styled.div`
 `;
 
 const Dashboard = () => {
-  const [workout, setWorkout] = useState("");
-  const data = {
-    totalCaloriesBurnt: 13500,
-    totalWorkouts: 6,
-    avgCaloriesBurntPerWorkout:2250,
-    totalWeeksCaloriesBurnt: {
-      weeks: ["17th", "18th", "19th", "20th", "21st", "22nd", "23rd"],
-      caloriesBurned: [10500, 0, 0, 0, 0, 0, 13500],
-    },
-    pieChartData: [ 
-      {
-        id: 0,
-        value: 6000,
-        label: "Legs",
-      },
-      {
-        id: 1,
-        value: 1500,
-        label: "Back",
-      },
-      {
-        id: 2,
-        value: 3750,
-        label: "Shoulder",
-      },
-      {
-        id: 3,
-        value: 2250,
-        label: "ABS",
-      },
-    ],
-  }
-  
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
+  const [todaysWorkouts, setTodaysWorkouts] = useState([]);
+  const [workout, setWorkout] = useState(`#Legs
+  -Back Squat
+  -5 setsx15 reps
+  -30 kg
+  -10 min`);
+
+  const dashboardData = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("ZenFit-app-token");
+    await getDashboardDetails(token).then((res) => {
+      setData(res.data);
+      console.log(res.data);
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    dashboardData();
+  }, []);
+
+  const addNewWorkout = async (workout, setWorkout, addNewWorkout, buttonLoading) => {
+    setButtonLoading(true);
+    const token = localStorage.getItem("ZenFit-app-token");
+    await addWorkout(token, {workoutString: workout}).then((res) => {
+      dashboardData();
+      setButtonLoading(false);
+    }).catch((err) => {
+      alert(err)
+    });
+  };
+
   return (  
     <Container>
         <Wrapper>
@@ -113,13 +115,20 @@ const Dashboard = () => {
             <FlexWrap>
                 <WeeklyStatsCard data={data}/>
                 <CategoryChart data={data} />
-                <AddWorkouts workout={workout} setWorkout={setWorkout} />
+                <AddWorkouts 
+                  workout={workout} 
+                  setWorkout={setWorkout} 
+                  addNewWorkout={addNewWorkout}
+                  setButtonLoading={buttonLoading}
+                />
             </FlexWrap>
 
             <Section>
               <Title>Todays Workouts</Title>
               <CardWrapper>
-                
+                {todaysWorkouts.map((workout) => (
+                  <WorkoutCard workout={workout} />
+                ))}
               </CardWrapper>
             </Section>
         </Wrapper>
