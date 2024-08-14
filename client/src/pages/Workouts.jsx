@@ -90,7 +90,6 @@ const Workouts = () => {
                   <WorkoutCard/>
                   <WorkoutCard/>
                   <WorkoutCard/>
-                  <WorkoutCard/>
                 </CardWrapper>
               </Section>
             </Right>

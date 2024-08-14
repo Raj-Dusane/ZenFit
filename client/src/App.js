@@ -1,11 +1,12 @@
+import React from 'react'; 
 import { ThemeProvider, styled } from "styled-components";
-import { lightTheme } from "./utils/Themes";
+import { lightTheme } from "./utils/Themes.js";
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 import { useSelector } from "react-redux";
-import Authentication from "./pages/Authentication";
+import Authentication from "./pages/Authentication.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import Workouts from "./pages/Workouts";
+import Workouts from "./pages/Workouts.jsx";
 
 
 const Container = styled.div`

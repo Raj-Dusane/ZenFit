@@ -1,9 +1,8 @@
 import axios from "axios";
-
+require('dotenv').config()
 const API =  axios.create({
-    baseURL: "http://localhost:8080/api/",
+    baseURL: `http://localhost:${REACT_APP_PORT}/api/`,
 });
-
 
 export const UserSignUp = async (data) => API.post("/user/signup", data);
 export const UserSignIn = async (data) => API.post("/user/signin", data);

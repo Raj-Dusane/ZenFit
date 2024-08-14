@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import TextInput from './TextInput';
-import Button from './Button';
-import { UserSignIn } from "../api";
+import TextInput from './TextInput.jsx';
+import Button from './Button.jsx';
+import { UserSignIn } from "../api/index.js";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/reducers/userSlice.js";
 

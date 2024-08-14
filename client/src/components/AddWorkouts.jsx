@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import TextInput from '../TextInput';
-import Button from '../Button.jsx';
+import TextInput from './TextInput.jsx';
+import Button from './Button.jsx';
 
 const Card = styled.div` 
   flex: 1;
@@ -27,27 +27,32 @@ const Title = styled.div`
   }
 `;
  
-const AddWorkouts = (workout, setWorkout) => {
-
+const AddWorkouts = ({ workout, setWorkout, addNewWorkout, buttonLoading }) => {
     return (
         <Card>
             <Title>Add New Workout</Title>
             <TextInput
-                label="Workout"
-                textArea
-                rows={10}
-                placeholder={`Enter in this format:
-        
-    #Category
-    -Workout Name
-    -Sets
-    -Reps
-    -Weight
-    -Duration` }
-                value={workout}
-                handelChange={(e) => setWorkout(e.target.value)}
+              label="Workout"
+              textArea
+              rows={10}
+              placeholder={`Enter in this format:
+
+#Category
+-Workout Name
+-Sets
+-Reps
+-Weight
+-Duration`}
+              value={workout.workout}
+              handelChange={(e) => setWorkout(e.target.value)}
             />
-            <Button text="Add workout" small/>
+            <Button 
+              text="Add workout" 
+              small
+              onClick={() => addNewWorkout()}
+              isLoading={buttonLoading}
+              isDisabled={buttonLoading}
+            />
         </Card>
     );
 }
