@@ -93,7 +93,6 @@ const CountsCard = ({item, data}) => {
         <Title>{item.name}</Title>
         <Value>
             {data && typeof data[item.key] === 'number' ? data[item.key].toFixed(2) : "N/A"}
-            {/* {data && data[item.key].toFixed(2)} */}
             <Unit>{item.unit}</Unit>
             <Span positive>(+10%)</Span>
         </Value>

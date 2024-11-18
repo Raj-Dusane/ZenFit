@@ -1,0 +1,5 @@
+PORT="<SERVER_PORT_NUMBER>"
+
+JWT="<JWT_Token>"
+
+MONGODB_URL="<Database_URL>"

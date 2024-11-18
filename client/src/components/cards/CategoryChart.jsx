@@ -1,4 +1,4 @@
-import { PieChart } from '@mui/x-charts/PieChart';
+import { PieChart } from '@mui/x-charts';
 import React from 'react';
 import styled from 'styled-components';
 
